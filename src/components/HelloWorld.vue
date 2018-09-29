@@ -23,7 +23,7 @@
       :on-preview="handlePreview"
       :on-remove="handleRemove"
       :onSuccess="uploadSuccess"
-      :file-list="fileList2"
+      :file-list="fileList"
       list-type="picture">
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -35,7 +35,8 @@
       list-type="picture-card"
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
-      :before-remove="beforeRemove">
+      :before-remove="beforeRemove"
+      :file-list="fileList">
       <i class="el-icon-plus"></i>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
@@ -65,8 +66,10 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       editImg: false,
-      fileList: [{name: 'food.jpeg', url: 'http://localhost:8081/static/img/34761f13f85549f0.84c47bc.jpg'}, {name: 'food2.jpeg', url: 'http://localhost:8081/static/img/34761f13f85549f0.84c47bc.jpg'}],
-      fileList2: [{name: 'food.jpeg', url: 'http://localhost:8081/static/img/34761f13f85549f0.84c47bc.jpg'}, {name: 'food2.jpeg', url: 'http://localhost:8081/static/img/34761f13f85549f0.84c47bc.jpg'}]
+      fileList: [
+        {name: 'food.jpeg', url: 'http://localhost:8081/static/img/34761f13f85549f0.84c47bc.jpg'},
+        {name: 'food2.jpeg', url: 'http://localhost:8081/static/img/34761f13f85549f0.84c47bc.jpg'}
+      ]
     }
   },
   methods: {
@@ -79,6 +82,7 @@ export default {
     },
     handleRemove (file, fileList) {
       console.log(file, fileList)
+      this.showMessage('删除成功！')
     },
     handlePreview (file) {
       console.log(file)
@@ -91,13 +95,18 @@ export default {
     },
     uploadSuccess (response, file, fileList) {
       console.log('上传文件' + response + file + fileList)
+      this.showMessage('上传成功！')
     },
     uploadError (response, file, fileList) {
       console.log('上传失败，请重试！' + response + file + fileList)
+      this.showMessage('上传失败，请重试！')
     },
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
+    },
+    showMessage (msg) {
+      this.$message(msg)
     }
   }
 }
